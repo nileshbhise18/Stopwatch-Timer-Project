@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: gray;
+        }
+
+        #timer-display {
+            font-weight: bold; 
+            font-size: x-large;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-center text-light mt-5">JQUERY TASKTIMER</h1>
+    <div class="card m-auto mt-5 border-0" style="width: 18rem;">
+            <h2 class="card-title bg-black text-light text-center">PSD TO HTML</h2>
+            <p class="card-text text-secondary px-2">TASK TIMER</p>
+            <hr>
+            <div class="px-2 mb-2" role="group">
+                <button class="bg-primary rounded border-0 text-white me-1" id="start-button">Start</button><span id="timer-display">00:00:00</span>
+                <button class="bg-warning rounded border-0 text-white" id="pause-button">Pause</button>
+                <button class="bg-danger rounded border-0 text-white" id="reset-button">Reset</button>
+            </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // initial variable
+            let seconds = 0;
+            let timerInterval;
+            let isRunning = false;
+            const timerDisplay = $('#timer-display');
+
+            // function HH:MM:SS
+            function formatTime(secs){
+                const hours = Math.floor(secs / 3600);
+                const minutes = Math.floor((secs % 3600)/ 60);
+                const remainingSeconds = secs % 60;
+
+                // add leading zeros for single-digit number
+                const formattedHours = String(hours).padStart(2,'0');
+                const formattedMinutes = String(minutes).padStart(2,'0');
+                const formattedSeconds = String(remainingSeconds).padStart(2,'0');
+                return`${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+            }
+
+            // Start-button
+    
+            $('#start-button').on('click',function(){
+                if (!isRunning){
+                    isRunning = true;
+                    timerInterval = setInterval(function(){
+                        seconds++;
+                        timerDisplay.text(formatTime(seconds));
+                    },1000);
+                }
+            });
+
+            // Pause-button
+            $('#pause-button').on('click',function(){
+                if(isRunning){
+                    isRunning = false;
+                    clearInterval(timerInterval);
+                }
+            });
+
+            // Reset-button
+            $('#reset-button').on('click',function(){
+                clearInterval(timerInterval);
+                seconds = 0;
+                isRunning = false;
+                timerDisplay.text('00:00:00');
+            });
+        });
+    </script>
+</body>
+</html>
